@@ -1,4 +1,4 @@
-const Item = require("./models/Item");
+const Item = require("../models/item");
 
 // GET all items
 const getItems = async (req, res) => {

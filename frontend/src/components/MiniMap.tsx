@@ -13,6 +13,7 @@ export default function MiniMap({ route }: MiniMapProps) {
   useEffect(() => {
     if (!mapRef.current || !route || route.length === 0) return;
 
+    // Convert city → coordinates
     const routeCoords = route
       .map((city) => getCoords(city))
       .filter(Boolean);
@@ -22,19 +23,19 @@ export default function MiniMap({ route }: MiniMapProps) {
       return;
     }
 
-    // Create map
+    // Init map
     const map = L.map(mapRef.current, {
       zoomControl: false,
       scrollWheelZoom: false,
       dragging: false,
-      attributionControl: false
+      attributionControl: false,
     });
 
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(map);
 
-    // Fit bounds across all stops
+    // Fit map to all coordinates
     const bounds = L.latLngBounds(routeCoords);
-    map.fitBounds(bounds, { padding: [30, 30] });
+    map.fitBounds(bounds, { padding: [40, 40] });
 
     // Marker Icon
     const icon = L.icon({
@@ -43,13 +44,20 @@ export default function MiniMap({ route }: MiniMapProps) {
       iconAnchor: [16, 32],
     });
 
-    // Add markers
+    // Markers
     routeCoords.forEach((point) => {
       L.marker(point, { icon }).addTo(map);
     });
 
-    // Removed the polyline here (no route line)
+    // ★ ADDING POLYLINE BACK ★
+    const polyline = L.polyline(routeCoords, {
+      color: "#2563eb", // Tailwind blue-600
+      weight: 4,
+      opacity: 0.9,
+      smoothFactor: 1,
+    }).addTo(map);
 
+    // Cleanup
     return () => map.remove();
   }, [route]);
 

@@ -39,8 +39,7 @@ useEffect(() => {
 }, []);
   const fetchRecent = async () => {
     try {
-      const res = await fetch(
-        `http://localhost:7000/api/shipments?limit=${RECENT_LIMIT}&sort=createdAt:desc`
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shipments`,
       );
 
       if (!res.ok) throw new Error("Failed fetching recent shipments");

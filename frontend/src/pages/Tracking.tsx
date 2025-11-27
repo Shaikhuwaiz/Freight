@@ -58,7 +58,7 @@ const getDotFillClasses = (status: string) => {
     setShipment(null);
 
     try {
-      const res = await fetch(`http://localhost:7000/api/shipments/${trackingId}`);
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shipments`);
       if (!res.ok) throw new Error("Shipment not found");
 
       const data = await res.json();

@@ -43,7 +43,7 @@ export default function CreateShipment() {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:7000/api/shipments", {
+    const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shipments`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -108,7 +108,7 @@ export default function Shipments() {
 
   useEffect(() => {
     setLoading(true);
-  fetch("http://localhost:7000/api/shipments")
+ fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shipments`)
       .then(async (res) => {
         if (!res.ok) {
           const text = await res.text();
@@ -399,9 +399,9 @@ if (s.status === "Delivered") {
                           )
                         )
                           return;
-                        await fetch(`http://localhost:7000/api/shipments/${s._id}`, {
-                          method: "DELETE",
-                        });
+                      await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shipments/${s._id}`, {
+  method: "DELETE",
+});
                         setShipments((prev) =>
                           prev.filter((ship) => ship._id !== s._id)
                         );

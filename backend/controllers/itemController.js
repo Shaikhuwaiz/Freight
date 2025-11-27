@@ -1,34 +1,32 @@
-const Item = require("../models/item");
+import Item from "../models/item.js";
 
 // GET all items
-const getItems = async (req, res) => {
+export const getItems = async (req, res) => {
   try {
     const items = await Item.find();
-    res.json(items);
+    res.status(200).json(items);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: "Failed to fetch items", error: err.message });
   }
 };
 
-// CREATE item
-const createItem = async (req, res) => {
+// CREATE new item
+export const createItem = async (req, res) => {
   try {
     const newItem = new Item(req.body);
-    const savedItem = await newItem.save();
-    res.status(201).json(savedItem);
+    await newItem.save();
+    res.status(201).json({ message: "Item created successfully", newItem });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: "Failed to create item", error: err.message });
   }
 };
 
-// DELETE item
-const deleteItem = async (req, res) => {
+// DELETE item by ID
+export const deleteItem = async (req, res) => {
   try {
     await Item.findByIdAndDelete(req.params.id);
-    res.json({ message: "Item deleted" });
+    res.status(200).json({ message: "Item deleted successfully" });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: "Failed to delete item", error: err.message });
   }
 };
-
-module.exports = { getItems, createItem, deleteItem };

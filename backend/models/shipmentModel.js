@@ -1,12 +1,33 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
-const shipmentSchema = new mongoose.Schema({
-  trackingId: String,
-  status: String,
-  origin: String,
-  destination: String,
-  expectedDelivery: Date,
-  lastLocation: String,
+const historySchema = new mongoose.Schema({
+  date: { type: Date, required: true },
+  status: { type: String, required: true },
+  location: { type: String, required: true },
+  details: { type: String, required: true },
 });
 
-module.exports = mongoose.model("Shipment", shipmentSchema);
+const shipmentSchema = new mongoose.Schema(
+  {
+    trackingId: { type: String, required: true, unique: true },
+    origin: { type: String, required: true },
+    destination: { type: String, required: true },
+    lastLocation: { type: String, default: "" },
+    status: {
+      type: String,
+      enum: ["Delivered", "In Transit", "Undelivered"],
+      default: "In Transit",
+    },
+    expectedDelivery: { type: Date, required: true },
+
+    // ✅ History is INSIDE schema now
+    history: {
+      type: [historySchema],
+      default: [],
+    },
+  },
+  { timestamps: true }
+);
+
+const Shipment = mongoose.model("Shipment", shipmentSchema);
+export default Shipment;

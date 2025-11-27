@@ -8,7 +8,10 @@ import shipmentRoutes from "./routes/shipmentRoutes.js";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 7000;
+const PORT = process.env.PORT;
+server.listen(PORT, () => {
+  console.log("API running on " + PORT);
+});
 
 // Middleware
 app.use(cors());

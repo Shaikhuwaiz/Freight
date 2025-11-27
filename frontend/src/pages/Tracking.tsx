@@ -51,24 +51,35 @@ const getDotFillClasses = (status: string) => {
       return "h-2.5 w-2.5 rounded-full bg-blue-400";
   }
 };
-  const handleTrack = async () => {
-    if (!trackingId) return;
-    setLoading(true);
-    setError("");
-    setShipment(null);
+const handleTrack = async () => {
+  if (!trackingId) return;
 
-    try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL}/api/shipments`);
-      if (!res.ok) throw new Error("Shipment not found");
+  setLoading(true);
+  setError("");
+  setShipment(null);
 
-      const data = await res.json();
-      setShipment(data);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+  try {
+    const res = await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/shipments/${trackingId}`
+    );
+
+    if (!res.ok) throw new Error("Shipment not found");
+
+    const data = await res.json();
+
+    // Safety fallback
+    if (!data || typeof data !== "object") {
+      throw new Error("Invalid shipment data");
     }
-  };
+
+    setShipment(data);
+  } catch (err: any) {
+    setError(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="max-w-3xl mx-auto p-6">
@@ -141,7 +152,8 @@ const getDotFillClasses = (status: string) => {
 
           {shipment && (
 <div className="w-full h-64 mb-6 rounded-xl overflow-hidden shadow-md border">
-<MiniMap route={shipment.history.map((h) => h.location)} />
+<MiniMap route={(shipment.history ?? []).map(h => h.location)} />
+
 
 </div>
 

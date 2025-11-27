@@ -1,4 +1,3 @@
-"use client";
 
 import { useState, useEffect } from "react";
 import { User, Mail, Lock, Settings, Edit2 } from "lucide-react";

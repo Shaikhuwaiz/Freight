@@ -43,16 +43,12 @@ export default function MiniMap({ route }: MiniMapProps) {
       iconAnchor: [16, 32],
     });
 
-    // Add markers for A → B → C → Destination
+    // Add markers
     routeCoords.forEach((point) => {
       L.marker(point, { icon }).addTo(map);
     });
 
-    // Draw polyline through all stops
-    L.polyline(routeCoords, {
-      color: "blue",
-      weight: 4,
-    }).addTo(map);
+    // Removed the polyline here (no route line)
 
     return () => map.remove();
   }, [route]);

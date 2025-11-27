@@ -11,5 +11,10 @@
       "src": "/api/(.*)",
       "dest": "https://YOUR-BACKEND-URL/api/$1"
     }
+  ],
+  
+  "rewrites": [
+    { "source": "/", "destination": "/login" },
+    { "source": "/(.*)", "destination": "/" }
   ]
 }

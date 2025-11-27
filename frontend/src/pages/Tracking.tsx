@@ -164,15 +164,8 @@ const handleTrack = async () => {
   <p className="text-gray-500 text-sm">No history available yet.</p>
 ) : (
 <div className="mt-6 pl-10">
- <ul
-  className={`space-y-10 border-l-2 border-gray-300 pl-6 ${
-    shipment.status === "Delivered"
-      ? "border-green-400"
-      : shipment.status === "In Transit"
-      ? "border-yellow-400 "
-      : "border-red-500 "
-  }`}
->
+<ul className="space-y-10 border-l-2 border-gray-300 pl-6">
+
     {(() => {
       // Sort newest first
       let sorted = shipment.history

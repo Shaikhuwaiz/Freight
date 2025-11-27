@@ -8,10 +8,7 @@ import shipmentRoutes from "./routes/shipmentRoutes.js";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT;
-server.listen(PORT, () => {
-  console.log("API running on " + PORT);
-});
+const PORT = process.env.PORT || 7000;
 
 // Middleware
 app.use(cors());
@@ -20,13 +17,15 @@ app.use("/auth", authRoutes);
 app.use("/api/shipments", shipmentRoutes);
 
 // MongoDB connection
-const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/freightDB";
+const MONGO_URI = process.env.MONGO_URI;
 
 mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("✅ MongoDB connected successfully"))
-  .catch((err) => console.error("❌ MongoDB connection failed:", err.message));
+  .connect(MONGO_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error("MongoDB connection failed:", err.message));
 
+// Health check
 app.get("/", (req, res) => res.send("Freight API is running..."));
 
-app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));
+// Start server
+app.listen(PORT, () => console.log(`Backend running on port ${PORT}`));

@@ -1,12 +1,16 @@
-import { Resend } from "resend";
-import dotenv from "dotenv";
-dotenv.config();
-console.log("LOADED RESEND KEY:", process.env.RESEND_API_KEY); // debug
+import nodemailer from "nodemailer";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
 export const sendLoginEmail = async (email) => {
   try {
-    console.log("Resend loaded:", !!process.env.RESEND_API_KEY);
+    console.log("SENDING LOGIN EMAIL TO:", email);
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS, // Gmail App Password
+      },
+    });
 
     const htmlContent = `
       <table width="100%" style="border-collapse: collapse;">
@@ -22,6 +26,7 @@ export const sendLoginEmail = async (email) => {
                       <td style="font-size: 28px; font-weight: bold; padding: 10px 0;">
                         Welcome to Talaria
                       </td>
+
                       <td style="padding-left: 8px; padding-top: 0px;">
                         <img src="https://raw.githubusercontent.com/Shaikhuwaiz/talaria-assets/main/logo.png"
                              alt="Talaria Logo"
@@ -35,11 +40,11 @@ export const sendLoginEmail = async (email) => {
               </tr>
             </table>
 
-            <p style="text-align:center; font-size: 16px; color: #333;">
-              You logged in successfully on <strong>${new Date().toLocaleString()}</strong>.
+            <p style="text-align:center; font-size: 16px; margin-top: 10px;">
+              You logged in successfully on ${new Date().toLocaleString()}.
             </p>
 
-            <p style="text-align:center; font-size: 14px; color: #777;">
+            <p style="text-align:center; font-size: 14px; color: #555;">
               If this was not you, please reset your password immediately.
             </p>
 
@@ -48,15 +53,18 @@ export const sendLoginEmail = async (email) => {
       </table>
     `;
 
-    const data = await resend.emails.send({
-      from: "Talaria <onboarding@resend.dev>",
+    const mailOptions = {
+      from: `Talaria Security <${process.env.EMAIL_USER}>`,
       to: email,
-      subject: "Login Successful – Talaria Dashboard",
-      html: htmlContent
-    });
+      subject: "Login Confirmation – Talaria Dashboard",
+      html: htmlContent,
+    };
 
-    console.log("Email Sent:", data);
+    await transporter.sendMail(mailOptions);
+
+    console.log("EMAIL SENT TO:", email);
+
   } catch (err) {
-    console.error("Resend Error:", err);
+    console.error("Email sending failed:", err.message);
   }
 };

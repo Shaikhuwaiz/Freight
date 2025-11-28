@@ -2,14 +2,22 @@ import nodemailer from "nodemailer";
 
 export const sendLoginEmail = async (email) => {
   try {
-    const transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, // SSL
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
+transporter.verify((err, success) => {
+      if (err) {
+        console.log("SMTP ERROR:", err);
+      } else {
+        console.log("SMTP READY");
+      }
     });
-
     const mailOptions = {
       from: `Talaria Security <${process.env.EMAIL_USER}>`,
       to: email,
@@ -47,7 +55,9 @@ export const sendLoginEmail = async (email) => {
 
     };
 
-    await transporter.sendMail(mailOptions);
+ await transporter.sendMail(mailOptions);
+    console.log("Login email sent to:", email);
+
   } catch (err) {
     console.error("Email sending failed:", err.message);
   }

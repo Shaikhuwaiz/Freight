@@ -1,11 +1,14 @@
 import nodemailer from "nodemailer";
 
 export const sendLoginEmail = async (email) => {
+  
   try {
+  console.log("EMAIL_USER =", process.env.EMAIL_USER);
+console.log("EMAIL_PASS =", process.env.EMAIL_PASS);
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 465,
-  secure: true, // SSL
+  secure: true, // SSL (REQUIRED for App Password)
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,

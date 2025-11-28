@@ -22,6 +22,8 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   try {
+    console.log("LOGIN ATTEMPT for:", req.body.email);
+
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
@@ -30,13 +32,10 @@ router.post("/login", async (req, res) => {
     const isMatch = await user.comparePassword(password);
     if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign(
-      { id: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
-    // Send Login Success Email (non-blocking)
     sendLoginEmail(email);
 
     res.status(200).json({ message: "Login successful", token });

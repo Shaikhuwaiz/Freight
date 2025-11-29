@@ -1,20 +1,10 @@
 import express from "express";
 const router = express.Router();
 
-router.post("/resend-webhook", async (req, res) => {
-  try {
-    const event = req.body;
+router.post("/", async (req, res) => {
+  console.log("Incoming email event:", req.body);
 
-    console.log("📩 Email Received:", event);
-
-    // Example: Forward email to your Gmail
-    // sendMailToGmail(event);
-
-    return res.status(200).json({ success: true });
-  } catch (err) {
-    console.error(err);
-    res.sendStatus(500);
-  }
+  res.status(200).send("OK");  
 });
 
 export default router;

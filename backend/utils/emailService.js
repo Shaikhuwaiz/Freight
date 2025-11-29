@@ -49,7 +49,7 @@ export const sendLoginEmail = async (email) => {
     `;
 
     const data = await resend.emails.send({
-      from: "Talaria <onboarding@resend.dev>",
+      from: "Talaria <noreply@talaria.co.in>",
       to: email,
       subject: "Login Successful – Talaria Dashboard",
       html: htmlContent

@@ -1,62 +1,58 @@
 import { Resend } from "resend";
 import dotenv from "dotenv";
 dotenv.config();
-console.log("LOADED RESEND KEY:", process.env.RESEND_API_KEY); // debug
 
 const resend = new Resend(process.env.RESEND_API_KEY);
-export const sendLoginEmail = async (email) => {
+
+export const sendLoginEmail = async (email, timezone) => {
   try {
-    console.log("Resend loaded:", !!process.env.RESEND_API_KEY);
+    // Format login time in user's local timezone
+    const loginTime = new Date().toLocaleString("en-US", {
+      timeZone: timezone,
+      hour12: true,
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    });
 
     const htmlContent = `
       <table width="100%" style="border-collapse: collapse;">
         <tr>
           <td align="center">
-
-            <table width="100%" style="border-collapse: collapse;">
+            <table style="border-collapse: collapse; text-align: center;">
               <tr>
-                <td align="center">
-
-                  <table style="border-collapse: collapse; text-align: center;">
-                    <tr>
-                      <td style="font-size: 28px; font-weight: bold; padding: 10px 0;">
-                        Welcome to Talaria
-                      </td>
-                      <td style="padding-left: 8px; padding-top: 0px;">
-                        <img src="https://raw.githubusercontent.com/Shaikhuwaiz/talaria-assets/main/logo.png"
-                             alt="Talaria Logo"
-                             width="26"
-                             style="display: block; margin-top: -6px;" />
-                      </td>
-                    </tr>
-                  </table>
-
+                <td style="font-size: 28px; font-weight: bold;">
+                  Welcome to Talaria
+                </td>
+                <td>
+                  <img src="https://raw.githubusercontent.com/Shaikhuwaiz/talaria-assets/main/logo.png" 
+                       width="26" />
                 </td>
               </tr>
             </table>
 
-            <p style="text-align:center; font-size: 16px; color: #333;">
-              You logged in successfully on <strong>${new Date().toLocaleString()}</strong>.
+            <p style="font-size: 16px; color: #333;">
+              You logged in successfully on <strong>${loginTime}</strong>.
             </p>
 
-            <p style="text-align:center; font-size: 14px; color: #777;">
+            <p style="font-size: 14px; color: #777;">
               If this was not you, please reset your password immediately.
             </p>
-
           </td>
         </tr>
       </table>
     `;
 
-    const data = await resend.emails.send({
+    await resend.emails.send({
       from: "Talaria <noreply@talaria.co.in>",
       to: email,
       subject: "Login Successful – Talaria Dashboard",
       html: htmlContent
     });
 
-    console.log("Email Sent:", data);
   } catch (err) {
-    console.error("Resend Error:", err);
+    console.error("RESEND ERROR:", err);
   }
 };

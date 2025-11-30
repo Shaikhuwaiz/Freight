@@ -1,5 +1,10 @@
-Freight is a full-stack logistics management system built using MERN Stack + Vite.  
-It supports real-time shipment tracking, map visualization, automated login alerts, and email workflows.
+# Freight – Global Freight & Shipment Tracking Platform
+
+Freight is a full-stack logistics and shipment tracking system built using **MERN Stack + Vite**.  
+It supports real-time tracking, map visualization, automated login alerts, and email workflows.
+
+🚚 **Live Website:** https://www.talaria.co.in
+
 
 📦 Talaria – Global Freight & Shipment Tracking System
 

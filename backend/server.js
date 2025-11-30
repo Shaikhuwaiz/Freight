@@ -29,3 +29,4 @@ mongoose
 app.get("/", (req, res) => res.send("✅Freight API is running..."));
 
 app.listen(PORT, () => console.log(`✅ Backend running on port ${PORT}`));
+authRoutes

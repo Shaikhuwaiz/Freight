@@ -1,3 +1,6 @@
+Freight is a full-stack logistics management system built using MERN Stack + Vite.  
+It supports real-time shipment tracking, map visualization, automated login alerts, and email workflows.
+
 📦 Talaria – Global Freight & Shipment Tracking System
 
 Talaria is a full-stack freight logistics platform designed to manage, monitor, and track shipments across the globe.
